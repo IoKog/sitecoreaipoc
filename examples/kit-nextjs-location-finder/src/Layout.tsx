@@ -11,6 +11,12 @@ import { Sora, Roboto } from 'next/font/google';
 import SitecoreStyles from 'components/content-sdk/SitecoreStyles';
 import { DesignLibraryApp } from '@sitecore-content-sdk/nextjs';
 import componentMap from '.sitecore/component-map';
+import {
+  generateWebSiteSchema,
+  generateOrganizationSchema,
+  renderJsonLdScript,
+  getBaseUrl,
+} from 'src/lib/seo';
 import Providers from './Providers';
 
 const heading = Sora({
@@ -51,10 +57,26 @@ const Layout = ({ page }: LayoutProps): JSX.Element => {
   const mainClassPageEditing = mode.isEditing ? 'editing-mode' : 'prod-mode';
   const classNamesMain = `${mainClassPageEditing} ${body.variable} ${heading.variable} main-layout`;
 
+  // Generate site-wide structured data
+  const baseUrl = getBaseUrl();
+  const websiteSchema = generateWebSiteSchema('Alaris', baseUrl, 'Find your nearest Alaris dealership');
+  const organizationSchema = generateOrganizationSchema('Alaris', baseUrl, undefined, 'Alaris - Premium automotive dealership network');
+
   return (
     <>
       <Scripts />
       <SitecoreStyles layoutData={layout} />
+      
+      {/* Site-wide structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(organizationSchema) }}
+      />
+      
       <Providers page={page}>
         {/* root placeholder for the app, which we add components to using route data */}
         <div className={`min-h-screen flex flex-col ${classNamesMain}`}>
@@ -71,42 +93,39 @@ const Layout = ({ page }: LayoutProps): JSX.Element => {
             )
           ) : (
             <>
-              <header>
-                <div id="header">
-                  {route && (
-                    <AppPlaceholder
-                      page={page}
-                      componentMap={componentMap}
-                      name="headless-header"
-                      rendering={route}
-                    />
-                  )}
-                </div>
-              </header>
-              <main>
-                <div id="content">
-                  {route && (
-                    <AppPlaceholder
-                      page={page}
-                      componentMap={componentMap}
-                      name="headless-main"
-                      rendering={route}
-                    />
-                  )}
-                </div>
+              {/* Header placeholder - components handle their own semantic elements */}
+              <div id="header">
+                {route && (
+                  <AppPlaceholder
+                    page={page}
+                    componentMap={componentMap}
+                    name="headless-header"
+                    rendering={route}
+                  />
+                )}
+              </div>
+              {/* Main content area */}
+              <main id="content" role="main">
+                {route && (
+                  <AppPlaceholder
+                    page={page}
+                    componentMap={componentMap}
+                    name="headless-main"
+                    rendering={route}
+                  />
+                )}
               </main>
-              <footer>
-                <div id="footer">
-                  {route && (
-                    <AppPlaceholder
-                      page={page}
-                      componentMap={componentMap}
-                      name="headless-footer"
-                      rendering={route}
-                    />
-                  )}
-                </div>
-              </footer>
+              {/* Footer placeholder - components handle their own semantic elements */}
+              <div id="footer">
+                {route && (
+                  <AppPlaceholder
+                    page={page}
+                    componentMap={componentMap}
+                    name="headless-footer"
+                    rendering={route}
+                  />
+                )}
+              </div>
             </>
           )}
         </div>
