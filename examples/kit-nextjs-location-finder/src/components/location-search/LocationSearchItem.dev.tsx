@@ -2,7 +2,8 @@
 
 import type { LocationSearchItemProps } from './location-search.props';
 import { Text } from '@sitecore-content-sdk/nextjs';
-import { generatePlaceSchema, renderJsonLdScript } from '@/lib/seo';
+import { generatePlaceSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 export const LocationSearchItem = ({
   dealership,
@@ -21,13 +22,15 @@ export const LocationSearchItem = ({
     dealership.longitude
   );
 
+  // Generate unique ID from dealership name and address
+  const dealershipName = dealership.dealershipName?.jsonValue?.value?.toString() || 'location';
+  const dealershipAddress = dealership.dealershipAddress?.jsonValue?.value?.toString() || '';
+  const uniqueId = `${dealershipName}-${dealershipAddress}`.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+
   return (
     <>
       {/* Structured data for this location */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(placeSchema) }}
-      />
+      <StructuredData id={`place-schema-${uniqueId}`} data={placeSchema} />
       
       <article
         className={`border-1 cursor-pointer p-5 transition-colors ${

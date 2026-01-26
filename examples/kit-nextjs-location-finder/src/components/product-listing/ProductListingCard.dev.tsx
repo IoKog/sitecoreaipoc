@@ -8,7 +8,9 @@ import type { ProductCardProps } from './product-listing.props';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { dictionaryKeys } from '@/variables/dictionary';
-import { generateProductSchema, renderJsonLdScript, getBaseUrl } from '@/lib/seo';
+import { generateProductSchema } from '@/lib/structured-data/schema';
+import { getBaseUrl } from '@/lib/utils';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 const ProductListingCard = ({
   product,
@@ -43,10 +45,7 @@ const ProductListingCard = ({
   return (
     <>
       {/* Product structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(productSchema) }}
-      />
+      <StructuredData id="product-schema" data={productSchema} />
       
       <CardSpotlight className="h-full w-full" prefersReducedMotion={prefersReducedMotion}>
         <article

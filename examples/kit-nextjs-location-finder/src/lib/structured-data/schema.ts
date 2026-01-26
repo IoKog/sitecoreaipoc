@@ -1,4 +1,8 @@
-// SEO utilities for schema.org structured data and metadata
+/**
+ * Schema.org structured data generators
+ * Provides functions to generate JSON-LD structured data for SEO and rich snippets
+ */
+import type { JsonLdValue } from './jsonld';
 
 export interface WebSiteSchema {
   '@context': 'https://schema.org';
@@ -108,7 +112,7 @@ export function generateWebSiteSchema(
   siteName: string,
   siteUrl: string,
   description?: string
-): WebSiteSchema {
+): JsonLdValue {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -120,7 +124,7 @@ export function generateWebSiteSchema(
       target: `${siteUrl}/search?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
-  };
+  } as JsonLdValue;
 }
 
 export function generateOrganizationSchema(
@@ -128,7 +132,7 @@ export function generateOrganizationSchema(
   url: string,
   logo?: string,
   description?: string
-): OrganizationSchema {
+): JsonLdValue {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -136,7 +140,7 @@ export function generateOrganizationSchema(
     url,
     logo,
     description,
-  };
+  } as JsonLdValue;
 }
 
 export function generateWebPageSchema(
@@ -144,7 +148,7 @@ export function generateWebPageSchema(
   pageUrl: string,
   description?: string,
   locale?: string
-): WebPageSchema {
+): JsonLdValue {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -152,7 +156,7 @@ export function generateWebPageSchema(
     description,
     url: pageUrl,
     inLanguage: locale || 'en',
-  };
+  } as JsonLdValue;
 }
 
 export function generatePlaceSchema(
@@ -164,8 +168,8 @@ export function generatePlaceSchema(
   country?: string,
   latitude?: number,
   longitude?: number
-): PlaceSchema {
-  const schema: PlaceSchema = {
+): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name,
@@ -176,7 +180,7 @@ export function generatePlaceSchema(
       addressRegion: region,
       postalCode,
       addressCountry: country || 'US',
-    },
+    } as JsonLdValue,
   };
 
   if (latitude && longitude) {
@@ -184,10 +188,10 @@ export function generatePlaceSchema(
       '@type': 'GeoCoordinates',
       latitude,
       longitude,
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 export function generateProductSchema(
@@ -197,8 +201,8 @@ export function generateProductSchema(
   url?: string,
   price?: string,
   priceCurrency: string = 'USD'
-): ProductSchema {
-  const schema: ProductSchema = {
+): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name,
@@ -213,15 +217,15 @@ export function generateProductSchema(
       price: price.replace(/[^0-9.]/g, ''), // Strip currency symbols
       priceCurrency,
       availability: 'https://schema.org/InStock',
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 export function generateFAQPageSchema(
   questions: Array<{ question: string; answer: string }>
-): FAQPageSchema {
+): JsonLdValue {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -233,7 +237,7 @@ export function generateFAQPageSchema(
         text: q.answer,
       },
     })),
-  };
+  } as JsonLdValue;
 }
 
 export function generateReviewSchema(
@@ -241,14 +245,14 @@ export function generateReviewSchema(
   reviewBody?: string,
   ratingValue?: number,
   bestRating: number = 5
-): ReviewSchema {
-  const schema: ReviewSchema = {
+): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Review',
     author: {
       '@type': 'Person',
       name: authorName,
-    },
+    } as JsonLdValue,
     reviewBody,
   };
 
@@ -257,15 +261,15 @@ export function generateReviewSchema(
       '@type': 'Rating',
       ratingValue,
       bestRating,
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 export function generateBreadcrumbListSchema(
   breadcrumbs: Array<{ name: string; url?: string }>
-): BreadcrumbListSchema {
+): JsonLdValue {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -275,33 +279,5 @@ export function generateBreadcrumbListSchema(
       name: crumb.name,
       item: crumb.url,
     })),
-  };
-}
-
-export function renderJsonLdScript(
-  schema:
-    | WebSiteSchema
-    | OrganizationSchema
-    | WebPageSchema
-    | PlaceSchema
-    | ProductSchema
-    | FAQPageSchema
-    | ReviewSchema
-    | BreadcrumbListSchema
-): string {
-  return JSON.stringify(schema);
-}
-
-export function getBaseUrl(host?: string | null): string {
-  if (host) {
-    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
-    return `${protocol}://${host}`;
-  }
-  return process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-}
-
-export function getFullUrl(path: string, host?: string | null): string {
-  const baseUrl = getBaseUrl(host);
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${baseUrl}${cleanPath}`;
+  } as JsonLdValue;
 }

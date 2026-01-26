@@ -8,7 +8,8 @@ import { ProductListingProps, ProductItemProps } from './product-listing.props';
 import { ProductListingCard } from './ProductListingCard.dev';
 import { useMatchMedia } from '@/hooks/use-match-media';
 import { cn } from '@/lib/utils';
-import { generateProductSchema, renderJsonLdScript } from '@/lib/structured-data';
+import { generateProductSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 export const ProductListingDefault: React.FC<ProductListingProps> = (props) => {
   const isReducedMotion = useMatchMedia('(prefers-reduced-motion: reduce)');
   const [activeCard, setActiveCard] = useState<string | null>(null);
@@ -70,9 +71,7 @@ export const ProductListingDefault: React.FC<ProductListingProps> = (props) => {
       >
         {/* JSON-LD structured data for products */}
         {productSchemas.map((schema, index) => (
-          <React.Fragment key={`product-schema-${index}`}>
-            {renderJsonLdScript(schema)}
-          </React.Fragment>
+          <StructuredData key={`product-schema-${index}`} id={`product-schema-${index}`} data={schema} />
         ))}
         <div className="@md:px-6 @md:py-20 @lg:py-28 mx-auto max-w-screen-xl px-4 py-12">
           <AnimatedSection

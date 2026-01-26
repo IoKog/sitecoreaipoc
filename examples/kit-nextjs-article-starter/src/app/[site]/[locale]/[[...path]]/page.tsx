@@ -11,8 +11,8 @@ import components from '.sitecore/component-map';
 import Providers from 'src/Providers';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import { JsonLdScript } from '@/components/structured-data/JsonLdScript';
-import { generateWebPageSchema } from '@/components/structured-data/schema-generators';
+import { StructuredData } from '@/components/structured-data/StructuredData';
+import { generateWebPageSchema } from '@/lib/structured-data/schema';
 
 type PageProps = {
   params: Promise<{
@@ -84,7 +84,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <NextIntlClientProvider>
       <Providers page={page} componentProps={componentProps}>
-        <JsonLdScript id="webpage-schema" schema={webPageSchema} strategy="beforeInteractive" />
+        <StructuredData id="webpage-schema" data={webPageSchema} />
         <Layout page={page} />
       </Providers>
     </NextIntlClientProvider>

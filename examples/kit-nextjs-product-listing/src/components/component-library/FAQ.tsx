@@ -15,7 +15,8 @@ import {
   AccordionTrigger,
 } from 'shadcd/components/ui/accordion';
 import ContentSdkRichText from '@/components/content-sdk-rich-text/ContentSdkRichText';
-import { generateFAQPageSchema, renderJsonLdScript } from '@/lib/structured-data';
+import { generateFAQPageSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 interface Fields {
   data: {
@@ -165,7 +166,7 @@ export const Default = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-default" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="max-w-3xl mx-auto">
           <div className="text-center">
@@ -218,7 +219,7 @@ export const FAQ1 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-1" data={faqSchema} />}
       <div className="container mx-auto">
         <div>
           <h2 className="text-3xl font-semibold mb-6">
@@ -283,7 +284,7 @@ export const FAQ2 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-2" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="grid gap-x-20 gap-y-12 md:grid-cols-2">
           <div>
@@ -325,7 +326,7 @@ export const FAQ3 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-3" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-5xl font-bold mb-6">
@@ -382,7 +383,7 @@ export const FAQ4 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-4" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="max-w-3xl mx-auto">
           <div className="text-center">
@@ -430,7 +431,7 @@ export const FAQ5 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-5" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="grid gap-x-20 gap-y-12 md:grid-cols-2">
           <div>
@@ -472,7 +473,7 @@ export const FAQ6 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-6" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="max-w-3xl">
           <h2 className="text-5xl font-bold mb-6">
@@ -518,7 +519,7 @@ export const FAQ7 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-7" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="max-w-3xl">
           <h2 className="text-5xl font-bold mb-6">
@@ -564,7 +565,7 @@ export const FAQ8 = (props: FAQProps): JSX.Element => {
   return (
     <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
       {/* JSON-LD structured data for FAQPage */}
-      {renderJsonLdScript(faqSchema)}
+      {faqSchema && <StructuredData id="faq-schema-8" data={faqSchema} />}
       <div className="container mx-auto">
         <div className="max-w-3xl">
           <h2 className="text-5xl font-bold mb-6">

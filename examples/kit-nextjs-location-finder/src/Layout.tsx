@@ -14,9 +14,10 @@ import componentMap from '.sitecore/component-map';
 import {
   generateWebSiteSchema,
   generateOrganizationSchema,
-  renderJsonLdScript,
-  getBaseUrl,
-} from 'src/lib/seo';
+} from 'src/lib/structured-data/schema';
+import { StructuredData } from 'src/components/structured-data/StructuredData';
+import { getBaseUrl } from 'src/lib/utils';
+import type { JsonLdValue } from 'src/lib/structured-data/jsonld';
 import Providers from './Providers';
 
 const heading = Sora({
@@ -68,14 +69,8 @@ const Layout = ({ page }: LayoutProps): JSX.Element => {
       <SitecoreStyles layoutData={layout} />
       
       {/* Site-wide structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(organizationSchema) }}
-      />
+      <StructuredData id="website-schema" data={websiteSchema as JsonLdValue} />
+      <StructuredData id="organization-schema" data={organizationSchema as JsonLdValue} />
       
       <Providers page={page}>
         {/* root placeholder for the app, which we add components to using route data */}

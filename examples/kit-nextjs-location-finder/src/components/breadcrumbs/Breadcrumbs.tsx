@@ -10,7 +10,9 @@ import { NoDataFallback } from '@/utils/NoDataFallback';
 import { ComponentProps } from '@/lib/component-props';
 import { GqlFieldString } from '@/types/gql.props';
 import { LinkFieldValue } from '@sitecore-content-sdk/nextjs';
-import { generateBreadcrumbListSchema, renderJsonLdScript, getBaseUrl } from '@/lib/seo';
+import { generateBreadcrumbListSchema } from '@/lib/structured-data/schema';
+import { getBaseUrl } from '@/lib/utils';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 type BreadcrumbsProps = ComponentProps & BreadcrumbsData;
 
@@ -61,10 +63,7 @@ export const Default: React.FC<BreadcrumbsProps> = (props) => {
       return (
         <>
           {/* BreadcrumbList structured data */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: renderJsonLdScript(breadcrumbSchema) }}
-          />
+          <StructuredData id="breadcrumb-schema" data={breadcrumbSchema} />
           
           <Breadcrumb>
             <BreadcrumbList>
@@ -91,12 +90,10 @@ export const Default: React.FC<BreadcrumbsProps> = (props) => {
     }
 
     //if no ancestors
+    const homeBreadcrumbSchema = generateBreadcrumbListSchema([{ name: 'Home', url: getBaseUrl() }]);
     return (
       <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: renderJsonLdScript(generateBreadcrumbListSchema([{ name: 'Home', url: getBaseUrl() }])) }}
-        />
+        <StructuredData id="breadcrumb-schema-home" data={homeBreadcrumbSchema} />
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

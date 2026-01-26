@@ -13,7 +13,8 @@ import {
   AccordionTrigger,
 } from 'shadcd/components/ui/accordion';
 import ContentSdkRichText from '@/components/content-sdk-rich-text/ContentSdkRichText';
-import { generateFAQPageSchema, renderJsonLdScript } from '@/lib/seo';
+import { generateFAQPageSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 interface Fields {
   data: {
@@ -162,10 +163,7 @@ export const Default = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -220,10 +218,7 @@ export const FAQ1 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -290,10 +285,7 @@ export const FAQ2 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -337,10 +329,7 @@ export const FAQ3 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-3" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -399,10 +388,7 @@ export const FAQ4 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -452,10 +438,7 @@ export const FAQ5 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -499,10 +482,7 @@ export const FAQ6 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -550,10 +530,7 @@ export const FAQ7 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">
@@ -601,10 +578,7 @@ export const FAQ8 = (props: FAQProps): JSX.Element => {
   return (
     <>
       {/* FAQPage structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: renderJsonLdScript(faqSchema) }}
-      />
+      <StructuredData id="faq-schema-1" data={faqSchema} />
       
       <section className={`py-24 px-4 ${props.params.styles}`} data-class-change>
         <div className="container mx-auto">

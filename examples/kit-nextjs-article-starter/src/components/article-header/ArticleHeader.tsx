@@ -26,11 +26,11 @@ import { useTranslations } from 'next-intl';
 import { dictionaryKeys } from '@/variables/dictionary';
 import { formatDateInUTC } from '@/utils/date-utils';
 import { Default as Icon } from '@/components/icon/Icon';
-import { JsonLdScript } from '@/components/structured-data/JsonLdScript';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 import {
   generateArticleSchema,
   generatePersonSchema,
-} from '@/components/structured-data/schema-generators';
+} from '@/lib/structured-data/schema';
 
 interface ArticleHeaderParams {
   [key: string]: any; // eslint-disable-line
@@ -290,12 +290,8 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, page }) => {
 
     return (
       <>
-        {articleSchema && (
-          <JsonLdScript id="article-schema" schema={articleSchema} strategy="afterInteractive" />
-        )}
-        {personSchema && (
-          <JsonLdScript id="author-person-schema" schema={personSchema} strategy="afterInteractive" />
-        )}
+        {articleSchema && <StructuredData id="article-schema" data={articleSchema} />}
+        {personSchema && <StructuredData id="author-person-schema" data={personSchema} />}
         <header
           className={cn('@container article-header relative mb-[86px] overflow-hidden')}
           ref={headerRef}

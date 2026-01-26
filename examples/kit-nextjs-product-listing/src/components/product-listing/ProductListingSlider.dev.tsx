@@ -12,7 +12,8 @@ import {
   SlideCarousel,
   SlideCarouselItemWrap,
 } from '@/components/slide-carousel/SlideCarousel.dev';
-import { generateProductSchema, renderJsonLdScript } from '@/lib/structured-data';
+import { generateProductSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 export const ProductListingSlider: React.FC<ProductListingProps> = (props) => {
   const isReducedMotion = useMatchMedia('(prefers-reduced-motion: reduce)');
@@ -69,9 +70,7 @@ export const ProductListingSlider: React.FC<ProductListingProps> = (props) => {
       >
         {/* JSON-LD structured data for products */}
         {productSchemas.map((schema, index) => (
-          <React.Fragment key={`product-schema-${index}`}>
-            {renderJsonLdScript(schema)}
-          </React.Fragment>
+          <StructuredData key={`product-schema-${index}`} id={`product-schema-${index}`} data={schema} />
         ))}
         <div className="@md:py-20 @lg:py-28 py-12 ">
           <div className="@xl:px-0 @md:pb-0 mx-auto max-w-screen-xl px-0 pb-10 [&:not(.px-6_&):not(.px-8_&):not(.px-10_&)]:px-6">

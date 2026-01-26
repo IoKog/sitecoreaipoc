@@ -10,7 +10,8 @@ import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import { DesignLibraryApp } from '@sitecore-content-sdk/nextjs';
 import componentMap from '.sitecore/component-map';
-import { generateOrganizationSchema, generateWebSiteSchema, renderJsonLdScript } from 'src/lib/structured-data';
+import { generateOrganizationSchema, generateWebSiteSchema } from 'src/lib/structured-data/schema';
+import { StructuredData } from 'src/components/structured-data/StructuredData';
 
 const heading = localFont({
   src: [
@@ -97,8 +98,8 @@ const Layout = ({ page }: LayoutProps): JSX.Element => {
     <>
       <Scripts />
       {/* JSON-LD structured data for Organization and WebSite */}
-      {renderJsonLdScript(organizationSchema)}
-      {renderJsonLdScript(websiteSchema)}
+      <StructuredData id="organization-schema" data={organizationSchema} />
+      <StructuredData id="website-schema" data={websiteSchema} />
       <SitecoreStyles layoutData={layout} />
       <Providers page={page}>
         {/* root placeholder for the app, which we add components to using route data */}

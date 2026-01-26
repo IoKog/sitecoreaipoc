@@ -14,7 +14,8 @@ import { ButtonBase } from '../button-component/ButtonComponent';
 import { FloatingDock } from '@/components/floating-dock/floating-dock.dev';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
-import { generateArticleSchema, renderJsonLdScript } from '@/lib/structured-data';
+import { generateArticleSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }) => {
   const { imageRequired, eyebrowOptional } = fields;
@@ -201,7 +202,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
     return (
       <>
         {/* JSON-LD structured data for article */}
-        {renderJsonLdScript(articleSchema)}
+        <StructuredData id="article-schema" data={articleSchema} />
         <header
           className={cn('@container article-header relative mb-[86px] overflow-hidden')}
           ref={headerRef}

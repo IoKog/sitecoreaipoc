@@ -1,8 +1,8 @@
 /**
- * Structured Data (JSON-LD) utilities for schema.org markup
+ * Schema.org structured data generators
  * Provides functions to generate JSON-LD structured data for SEO and rich snippets
  */
-import React from 'react';
+import type { JsonLdValue } from './jsonld';
 
 export interface ProductSchema {
   '@context': string;
@@ -128,19 +128,19 @@ export function generateProductSchema(product: {
   priceCurrency?: string;
   url?: string;
   brand?: string;
-}): ProductSchema {
-  const schema: ProductSchema = {
+}): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
   };
 
   if (product.image) {
-    schema.image = product.image;
+    schema.image = product.image as JsonLdValue;
   }
 
   if (product.description) {
-    schema.description = product.description;
+    schema.description = product.description as JsonLdValue;
   }
 
   if (product.price) {
@@ -149,21 +149,21 @@ export function generateProductSchema(product: {
       price: product.price,
       priceCurrency: product.priceCurrency || 'USD',
       availability: 'https://schema.org/InStock',
-    };
+    } as JsonLdValue;
   }
 
   if (product.url) {
-    schema.url = product.url;
+    schema.url = product.url as JsonLdValue;
   }
 
   if (product.brand) {
     schema.brand = {
       '@type': 'Brand',
       name: product.brand,
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 /**
@@ -185,60 +185,62 @@ export function generateArticleSchema(article: {
   };
   description?: string;
   articleBody?: string;
-}): ArticleSchema {
-  const schema: ArticleSchema = {
+}): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.headline,
   };
 
   if (article.image) {
-    schema.image = article.image;
+    schema.image = (Array.isArray(article.image) ? article.image : [article.image]) as JsonLdValue;
   }
 
   if (article.datePublished) {
-    schema.datePublished = article.datePublished;
+    schema.datePublished = article.datePublished as JsonLdValue;
   }
 
   if (article.dateModified) {
-    schema.dateModified = article.dateModified;
+    schema.dateModified = article.dateModified as JsonLdValue;
   }
 
   if (article.author) {
-    schema.author = {
+    const authorObj: { [key: string]: JsonLdValue } = {
       '@type': 'Person',
       name: article.author.name,
     };
     if (article.author.image) {
-      schema.author.image = article.author.image;
+      authorObj.image = article.author.image as JsonLdValue;
     }
     if (article.author.jobTitle) {
-      schema.author.jobTitle = article.author.jobTitle;
+      authorObj.jobTitle = article.author.jobTitle as JsonLdValue;
     }
+    schema.author = authorObj as JsonLdValue;
   }
 
   if (article.publisher) {
-    schema.publisher = {
+    const publisherObj: { [key: string]: JsonLdValue } = {
       '@type': 'Organization',
       name: article.publisher.name,
     };
     if (article.publisher.logo) {
-      schema.publisher.logo = {
+      publisherObj.logo = {
         '@type': 'ImageObject',
         url: article.publisher.logo,
-      };
+      } as JsonLdValue;
     }
+    schema.publisher = publisherObj as JsonLdValue;
   }
 
   if (article.description) {
-    schema.description = article.description;
+    schema.description = article.description as JsonLdValue;
   }
 
   if (article.articleBody) {
-    schema.articleBody = article.articleBody;
+    schema.articleBody = article.articleBody as JsonLdValue;
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 /**
@@ -254,39 +256,39 @@ export function generateOrganizationSchema(org: {
     email?: string;
     telephone?: string;
   };
-}): OrganizationSchema {
-  const schema: OrganizationSchema = {
+}): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: org.name,
   };
 
   if (org.url) {
-    schema.url = org.url;
+    schema.url = org.url as JsonLdValue;
   }
 
   if (org.logo) {
-    schema.logo = org.logo;
+    schema.logo = org.logo as JsonLdValue;
   }
 
   if (org.sameAs && org.sameAs.length > 0) {
-    schema.sameAs = org.sameAs;
+    schema.sameAs = org.sameAs as JsonLdValue;
   }
 
   if (org.contactPoint) {
     schema.contactPoint = {
       '@type': 'ContactPoint',
       contactType: org.contactPoint.contactType || 'Customer Service',
-    };
+    } as JsonLdValue;
     if (org.contactPoint.email) {
-      schema.contactPoint.email = org.contactPoint.email;
+      (schema.contactPoint as { [key: string]: JsonLdValue }).email = org.contactPoint.email as JsonLdValue;
     }
     if (org.contactPoint.telephone) {
-      schema.contactPoint.telephone = org.contactPoint.telephone;
+      (schema.contactPoint as { [key: string]: JsonLdValue }).telephone = org.contactPoint.telephone as JsonLdValue;
     }
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 /**
@@ -296,8 +298,8 @@ export function generateWebSiteSchema(site: {
   name: string;
   url: string;
   searchUrl?: string;
-}): WebSiteSchema {
-  const schema: WebSiteSchema = {
+}): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: site.name,
@@ -312,16 +314,16 @@ export function generateWebSiteSchema(site: {
         urlTemplate: site.searchUrl,
       },
       'query-input': 'required name=search_term_string',
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
+  return schema as JsonLdValue;
 }
 
 /**
  * Generate FAQPage JSON-LD structured data
  */
-export function generateFAQPageSchema(faqs: Array<{ question: string; answer: string }>): FAQPageSchema {
+export function generateFAQPageSchema(faqs: Array<{ question: string; answer: string }>): JsonLdValue {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -333,7 +335,7 @@ export function generateFAQPageSchema(faqs: Array<{ question: string; answer: st
         text: faq.answer,
       },
     })),
-  };
+  } as JsonLdValue;
 }
 
 /**
@@ -354,65 +356,55 @@ export function generatePlaceSchema(place: {
   };
   telephone?: string;
   url?: string;
-}): PlaceSchema {
-  const schema: PlaceSchema = {
+}): JsonLdValue {
+  const schema: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Place',
     name: place.name,
   };
 
   if (place.address) {
-    schema.address = {
+    const addressObj: { [key: string]: JsonLdValue } = {
       '@type': 'PostalAddress',
     };
     if (place.address.streetAddress) {
-      schema.address.streetAddress = place.address.streetAddress;
+      addressObj.streetAddress = place.address.streetAddress as JsonLdValue;
     }
     if (place.address.addressLocality) {
-      schema.address.addressLocality = place.address.addressLocality;
+      addressObj.addressLocality = place.address.addressLocality as JsonLdValue;
     }
     if (place.address.addressRegion) {
-      schema.address.addressRegion = place.address.addressRegion;
+      addressObj.addressRegion = place.address.addressRegion as JsonLdValue;
     }
     if (place.address.postalCode) {
-      schema.address.postalCode = place.address.postalCode;
+      addressObj.postalCode = place.address.postalCode as JsonLdValue;
     }
     if (place.address.addressCountry) {
-      schema.address.addressCountry = place.address.addressCountry;
+      addressObj.addressCountry = place.address.addressCountry as JsonLdValue;
     }
+    schema.address = addressObj as JsonLdValue;
   }
 
   if (place.geo) {
-    schema.geo = {
+    const geoObj: { [key: string]: JsonLdValue } = {
       '@type': 'GeoCoordinates',
     };
     if (place.geo.latitude) {
-      schema.geo.latitude = place.geo.latitude;
+      geoObj.latitude = place.geo.latitude as JsonLdValue;
     }
     if (place.geo.longitude) {
-      schema.geo.longitude = place.geo.longitude;
+      geoObj.longitude = place.geo.longitude as JsonLdValue;
     }
+    schema.geo = geoObj as JsonLdValue;
   }
 
   if (place.telephone) {
-    schema.telephone = place.telephone;
+    schema.telephone = place.telephone as JsonLdValue;
   }
 
   if (place.url) {
-    schema.url = place.url;
+    schema.url = place.url as JsonLdValue;
   }
 
-  return schema;
-}
-
-/**
- * Render JSON-LD script tag
- */
-export function renderJsonLdScript(
-  schema: ProductSchema | ArticleSchema | OrganizationSchema | WebSiteSchema | FAQPageSchema | PlaceSchema
-): React.JSX.Element {
-  return React.createElement('script', {
-    type: 'application/ld+json',
-    dangerouslySetInnerHTML: { __html: JSON.stringify(schema, null, 2) },
-  });
+  return schema as JsonLdValue;
 }

@@ -1,7 +1,8 @@
 import './globals.css';
 
-import { JsonLdScript } from '@/components/structured-data/JsonLdScript';
-import { generateOrganizationSchema, generateWebSiteSchema } from '@/components/structured-data/schema-generators';
+import { StructuredData } from '@/components/structured-data/StructuredData';
+import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/structured-data/schema';
+import type { JsonLdValue } from '@/lib/structured-data/jsonld';
 
 export default function RootLayout({
   children,
@@ -26,10 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <JsonLdScript id="organization-schema" schema={organizationSchema} strategy="beforeInteractive" />
-        {webSiteSchema && (
-          <JsonLdScript id="website-schema" schema={webSiteSchema} strategy="beforeInteractive" />
-        )}
+        <StructuredData id="organization-schema" data={organizationSchema as JsonLdValue} />
+        {webSiteSchema && <StructuredData id="website-schema" data={webSiteSchema as JsonLdValue} />}
         {children}
       </body>
     </html>

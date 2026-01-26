@@ -17,7 +17,8 @@ import {
 } from './testimonial-carousel.props';
 import { Default as TestimonialCarouselItem } from './TestimonialCarouselItem';
 import { NoDataFallback } from '@/utils/NoDataFallback';
-import { generateReviewSchema, renderJsonLdScript } from '@/lib/seo';
+import { generateReviewSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 export const Default: React.FC<TestimonialCarouselProps> = (props) => {
   const { fields } = props || {};
@@ -117,11 +118,7 @@ export const Default: React.FC<TestimonialCarouselProps> = (props) => {
       <>
         {/* Review structured data for each testimonial */}
         {reviewSchemas.map((schema, index) => (
-          <script
-            key={index}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: renderJsonLdScript(schema) }}
-          />
+          <StructuredData key={index} id={`review-schema-${index}`} data={schema} />
         ))}
         
         <section

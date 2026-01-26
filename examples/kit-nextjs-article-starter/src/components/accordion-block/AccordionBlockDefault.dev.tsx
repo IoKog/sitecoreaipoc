@@ -5,8 +5,8 @@ import { ButtonBase as Button } from '@/components/button-component/ButtonCompon
 import { AccordionProps, AccordionItemProps } from './accordion-block.props';
 import { AccordionBlockItem } from './AccordionBlockItem.dev';
 import { NoDataFallback } from '@/utils/NoDataFallback';
-import { JsonLdScript } from '@/components/structured-data/JsonLdScript';
-import { generateFAQPageSchema } from '@/components/structured-data/schema-generators';
+import { StructuredData } from '@/components/structured-data/StructuredData';
+import { generateFAQPageSchema } from '@/lib/structured-data/schema';
 
 const stripHtml = (value: string): string => value.replace(/<[^>]*>/g, '').trim();
 
@@ -67,7 +67,7 @@ export const AccordionBlockDefault: React.FC<AccordionProps> = (props) => {
   if (fields) {
     return (
       <>
-        {faqSchema && <JsonLdScript id="accordion-faq-schema" schema={faqSchema} strategy="afterInteractive" />}
+        {faqSchema && <StructuredData id="accordion-faq-schema" data={faqSchema} />}
         <section
           data-component="AccordionBlock"
           data-class-change

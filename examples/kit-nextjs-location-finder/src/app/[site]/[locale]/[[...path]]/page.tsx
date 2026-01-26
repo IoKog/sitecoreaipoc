@@ -13,10 +13,9 @@ import { setRequestLocale } from 'next-intl/server';
 import {
   generateWebPageSchema,
   generateProductSchema,
-  renderJsonLdScript,
-  getBaseUrl,
-  getFullUrl,
-} from 'src/lib/seo';
+} from 'src/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
+import { getBaseUrl, getFullUrl } from '@/lib/utils';
 
 type PageProps = {
   params: Promise<{
@@ -77,16 +76,8 @@ export default async function Page({ params, searchParams }: PageProps) {
     <NextIntlClientProvider>
       <Providers page={page}>
         {/* Page-specific structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: renderJsonLdScript(webPageSchema) }}
-        />
-        {productSchema && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: renderJsonLdScript(productSchema) }}
-          />
-        )}
+        <StructuredData id="webpage-schema" data={webPageSchema} />
+        {productSchema && <StructuredData id="product-schema-page" data={productSchema} />}
         <Layout page={page} />
       </Providers>
     </NextIntlClientProvider>

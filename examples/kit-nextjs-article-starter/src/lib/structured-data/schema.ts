@@ -2,12 +2,13 @@
  * Schema.org structured data generators
  * These are pure functions that can be used in both server and client components
  */
+import type { JsonLdValue } from './jsonld';
 
 /**
  * Convert schema object to JSON-LD string.
  * (Useful for debugging / testing and parity with other starters.)
  */
-export const schemaToJsonLd = (schema: Record<string, unknown>): string => {
+export const schemaToJsonLd = (schema: JsonLdValue): string => {
   return JSON.stringify(schema, null, 2);
 };
 
@@ -31,7 +32,7 @@ export interface ArticleSchemaProps {
   url?: string;
 }
 
-export const generateArticleSchema = (props: ArticleSchemaProps) => {
+export function generateArticleSchema(props: ArticleSchemaProps): JsonLdValue {
   const {
     headline,
     description,
@@ -43,11 +44,11 @@ export const generateArticleSchema = (props: ArticleSchemaProps) => {
     url,
   } = props;
 
-  const schema: Record<string, unknown> = {
+  const schema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline,
-  };
+  } as { [key: string]: JsonLdValue };
 
   if (description) {
     schema.description = description;
@@ -94,8 +95,8 @@ export const generateArticleSchema = (props: ArticleSchemaProps) => {
     };
   }
 
-  return schema;
-};
+  return schema as JsonLdValue;
+}
 
 /**
  * Generate FAQPage schema.org structured data
@@ -109,7 +110,7 @@ export interface FAQPageSchemaProps {
   faqs: FAQItem[];
 }
 
-export const generateFAQPageSchema = (props: FAQPageSchemaProps) => {
+export const generateFAQPageSchema = (props: FAQPageSchemaProps): JsonLdValue | null => {
   const { faqs } = props;
 
   if (!faqs || faqs.length === 0) {
@@ -127,7 +128,7 @@ export const generateFAQPageSchema = (props: FAQPageSchemaProps) => {
         text: faq.answer,
       },
     })),
-  };
+  } as JsonLdValue;
 };
 
 /**
@@ -145,38 +146,38 @@ export interface OrganizationSchemaProps {
   };
 }
 
-export const generateOrganizationSchema = (props: OrganizationSchemaProps) => {
+export function generateOrganizationSchema(props: OrganizationSchemaProps): JsonLdValue {
   const { name, url, logo, sameAs, contactPoint } = props;
 
-  const schema: Record<string, unknown> = {
+  const result: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name,
   };
 
   if (url) {
-    schema.url = url;
+    result.url = url as JsonLdValue;
   }
 
   if (logo) {
-    schema.logo = logo;
+    result.logo = logo as JsonLdValue;
   }
 
   if (sameAs && sameAs.length > 0) {
-    schema.sameAs = sameAs;
+    result.sameAs = sameAs as JsonLdValue;
   }
 
   if (contactPoint) {
-    schema.contactPoint = {
+    result.contactPoint = {
       '@type': 'ContactPoint',
       ...(contactPoint.telephone && { telephone: contactPoint.telephone }),
       ...(contactPoint.contactType && { contactType: contactPoint.contactType }),
       ...(contactPoint.email && { email: contactPoint.email }),
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
-};
+  return result as JsonLdValue;
+}
 
 /**
  * Generate WebSite schema.org structured data
@@ -187,10 +188,10 @@ export interface WebSiteSchemaProps {
   searchUrlTemplate?: string;
 }
 
-export const generateWebSiteSchema = (props: WebSiteSchemaProps) => {
+export function generateWebSiteSchema(props: WebSiteSchemaProps): JsonLdValue {
   const { name, url, searchUrlTemplate } = props;
 
-  const schema: Record<string, unknown> = {
+  const result: { [key: string]: JsonLdValue } = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name,
@@ -198,18 +199,18 @@ export const generateWebSiteSchema = (props: WebSiteSchemaProps) => {
   };
 
   if (searchUrlTemplate) {
-    schema.potentialAction = {
+    result.potentialAction = {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
         urlTemplate: searchUrlTemplate,
       },
       'query-input': 'required name=search_term_string',
-    };
+    } as JsonLdValue;
   }
 
-  return schema;
-};
+  return result as JsonLdValue;
+}
 
 /**
  * Generate WebPage schema.org structured data
@@ -225,14 +226,14 @@ export interface WebPageSchemaProps {
   };
 }
 
-export const generateWebPageSchema = (props: WebPageSchemaProps) => {
+export function generateWebPageSchema(props: WebPageSchemaProps): JsonLdValue {
   const { name, url, description, inLanguage, isPartOf } = props;
 
-  const schema: Record<string, unknown> = {
+  const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     name,
-  };
+  } as { [key: string]: JsonLdValue };
 
   if (description) schema.description = description;
   if (url) schema.url = url;
@@ -245,8 +246,8 @@ export const generateWebPageSchema = (props: WebPageSchemaProps) => {
     };
   }
 
-  return schema;
-};
+  return schema as JsonLdValue;
+}
 
 /**
  * Generate BreadcrumbList schema.org structured data
@@ -261,7 +262,7 @@ export interface BreadcrumbListSchemaProps {
   items: BreadcrumbItem[];
 }
 
-export const generateBreadcrumbListSchema = (props: BreadcrumbListSchemaProps) => {
+export const generateBreadcrumbListSchema = (props: BreadcrumbListSchemaProps): JsonLdValue | null => {
   const { items } = props;
 
   if (!items || items.length === 0) {
@@ -277,7 +278,7 @@ export const generateBreadcrumbListSchema = (props: BreadcrumbListSchemaProps) =
       name: item.name,
       item: item.url,
     })),
-  };
+  } as JsonLdValue;
 };
 
 /**
@@ -291,14 +292,14 @@ export interface PersonSchemaProps {
   sameAs?: string[];
 }
 
-export const generatePersonSchema = (props: PersonSchemaProps) => {
+export function generatePersonSchema(props: PersonSchemaProps): JsonLdValue {
   const { name, jobTitle, image, url, sameAs } = props;
 
-  const schema: Record<string, unknown> = {
+  const schema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name,
-  };
+  } as { [key: string]: JsonLdValue };
 
   if (jobTitle) {
     schema.jobTitle = jobTitle;
@@ -316,5 +317,5 @@ export const generatePersonSchema = (props: PersonSchemaProps) => {
     schema.sameAs = sameAs;
   }
 
-  return schema;
-};
+  return schema as JsonLdValue;
+}

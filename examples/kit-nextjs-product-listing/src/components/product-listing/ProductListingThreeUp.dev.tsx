@@ -8,7 +8,8 @@ import type { ProductListingProps, ProductItemProps } from './product-listing.pr
 import { ProductListingCard } from './ProductListingCard.dev';
 import { useMatchMedia } from '@/hooks/use-match-media';
 import { cn } from '@/lib/utils';
-import { generateProductSchema, renderJsonLdScript } from '@/lib/structured-data';
+import { generateProductSchema } from '@/lib/structured-data/schema';
+import { StructuredData } from '@/components/structured-data/StructuredData';
 
 export const ProductListingThreeUp: React.FC<ProductListingProps> = (props) => {
   const { fields, isPageEditing } = props;
@@ -69,9 +70,7 @@ export const ProductListingThreeUp: React.FC<ProductListingProps> = (props) => {
       >
         {/* JSON-LD structured data for products */}
         {productSchemas.map((schema, index) => (
-          <React.Fragment key={`product-schema-${index}`}>
-            {renderJsonLdScript(schema)}
-          </React.Fragment>
+          <StructuredData key={`product-schema-${index}`} id={`product-schema-${index}`} data={schema} />
         ))}
         <AnimatedSection
           direction="down"
