@@ -14,6 +14,10 @@ import { setRequestLocale } from 'next-intl/server';
 import { StructuredData } from '@/components/structured-data/StructuredData';
 import { generateWebPageSchema } from '@/lib/structured-data/schema';
 
+// Configure dynamic rendering to avoid SSR issues with client-side hooks
+// This ensures all pages are rendered on-demand rather than pre-rendered at build time
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   params: Promise<{
     site: string;
