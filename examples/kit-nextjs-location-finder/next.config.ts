@@ -45,6 +45,10 @@ const nextConfig: NextConfig = {
         locale: false,
       },
       {
+        source: '/faq.json',
+        destination: '/ai/faq.json',
+      },
+      {
         source: '/.well-known/ai.txt',
         destination: '/api/well-known/ai-txt',
         locale: false,
